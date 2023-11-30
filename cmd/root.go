@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
 	"os"
-	"os/exec"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +18,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	Run: setup,
+	//Run: setup,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -43,26 +40,4 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-func setup(cmd *cobra.Command, args []string) {
-	fmt.Println("Hello pyproject")
-	installed, version := checkIfPythonInstalled()
-	if installed == false {
-		log.Fatal("Python not installed!")
-	}
-	fmt.Printf("%s", version)
-}
-
-func checkIfPythonInstalled() (bool, string) {
-	out, err := exec.Command("python", "--version").Output()
-	if err != nil {
-		out, err = exec.Command("python3", "--version").Output()
-		if err != nil {
-			log.Println(err)
-			return false, "not installed"
-		}
-	}
-
-	return true, string(out)
 }
