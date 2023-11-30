@@ -8,8 +8,20 @@ import (
 	"log"
 	"os/exec"
 
+	"github.com/charmbracelet/lipgloss"
 	"github.com/spf13/cobra"
 )
+
+// Logo generated from https://www.asciiart.eu/text-to-ascii-art
+const logo = `
+ ______   __  __     ______   ______     ______       __     ______     ______     ______ 
+/\  == \ /\ \_\ \   /\  == \ /\  == \   /\  __ \     /\ \   /\  ___\   /\  ___\   /\__  _\
+\ \  _-/ \ \____ \  \ \  _-/ \ \  __<   \ \ \/\ \   _\_\ \  \ \  __\   \ \ \____  \/_/\ \/
+ \ \_\    \/\_____\  \ \_\    \ \_\ \_\  \ \_____\ /\_____\  \ \_____\  \ \_____\    \ \_\
+  \/_/     \/_____/   \/_/     \/_/ /_/   \/_____/ \/_____/   \/_____/   \/_____/     \/_/
+`
+
+var logoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#ff0097")).Bold(true)
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
@@ -22,7 +34,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("create called")
+		fmt.Printf("%s\n", logoStyle.Render(logo))
+
 		installed, version := checkIfPythonInstalled()
 		if installed == false {
 			log.Fatal("Python not installed!")
