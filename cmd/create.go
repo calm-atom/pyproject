@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 
 	"github.com/charmbracelet/lipgloss"
@@ -42,6 +43,19 @@ to quickly create a Cobra application.`,
 		}
 		fmt.Printf("%s", version)
 
+		fmt.Println("What is the name of your project? ")
+		var input string
+		fmt.Scanln(&input)
+		fmt.Printf("You entered %s\n", input)
+		if checkIfProjectExists(input) {
+			log.Fatal("Project already exists!")
+		}
+
+		err := os.MkdirAll(input, 0751)
+		if err != nil {
+			panic("Error creating directory!")
+		}
+
 	},
 }
 
@@ -75,4 +89,17 @@ func checkIfPythonInstalled() (bool, string) {
 	}
 
 	return true, string(out)
+}
+
+func checkIfProjectExists(name string) bool {
+	if _, err := os.Stat(name); err == nil {
+		dirEntries, err := os.ReadDir(name)
+		if err != nil {
+			log.Printf("Could not read directory %v", err)
+		}
+		if len(dirEntries) > 0 {
+			return true
+		}
+	}
+	return false
 }
